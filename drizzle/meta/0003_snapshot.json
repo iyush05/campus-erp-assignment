@@ -1,0 +1,1441 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "fdd6d5bc-4e39-4656-882a-cac3b2d066b6",
+  "prevId": "61759935-3ecd-4c86-a627-3bb847d3ffe9",
+  "tables": {
+    "workspaces": {
+      "name": "workspaces",
+      "columns": {
+        "owner_id": {
+          "name": "owner_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "revision": {
+          "name": "revision",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "data": {
+          "name": "data",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "campus_workspaces": {
+      "name": "campus_workspaces",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "campus_id": {
+          "name": "campus_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "department_id": {
+          "name": "department_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "settings_json": {
+          "name": "settings_json",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "revision": {
+          "name": "revision",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "commit_token": {
+          "name": "commit_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "migrated_from": {
+          "name": "migrated_from",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "staff_members": {
+      "name": "staff_members",
+      "columns": {
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "display_name": {
+          "name": "display_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "active": {
+          "name": "active",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 1
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 1
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "staff_user_lookup": {
+          "name": "staff_user_lookup",
+          "columns": [
+            "user_id",
+            "active"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "staff_members_workspace_id_campus_workspaces_id_fk": {
+          "tableFrom": "staff_members",
+          "tableTo": "campus_workspaces",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "name": "staff_members_workspace_id_campus_workspaces_id_fk"
+        }
+      },
+      "compositePrimaryKeys": {
+        "staff_members_workspace_id_user_id_pk": {
+          "columns": [
+            "workspace_id",
+            "user_id"
+          ],
+          "name": "staff_members_workspace_id_user_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "staff_members_role_check": {
+          "name": "staff_members_role_check",
+          "value": "role IN ('admin','faculty')"
+        },
+        "staff_members_active_check": {
+          "name": "staff_members_active_check",
+          "value": "active IN (0,1)"
+        }
+      }
+    },
+    "campus_students": {
+      "name": "campus_students",
+      "columns": {
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "roll": {
+          "name": "roll",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "year": {
+          "name": "year",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "section": {
+          "name": "section",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "category": {
+          "name": "category",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "baseline_held": {
+          "name": "baseline_held",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "baseline_present": {
+          "name": "baseline_present",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "legacy_attendance": {
+          "name": "legacy_attendance",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "opening_due": {
+          "name": "opening_due",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "synthetic": {
+          "name": "synthetic",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "campus_students_workspace_id_campus_workspaces_id_fk": {
+          "tableFrom": "campus_students",
+          "tableTo": "campus_workspaces",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "name": "campus_students_workspace_id_campus_workspaces_id_fk"
+        }
+      },
+      "compositePrimaryKeys": {
+        "campus_students_workspace_id_id_pk": {
+          "columns": [
+            "workspace_id",
+            "id"
+          ],
+          "name": "campus_students_workspace_id_id_pk"
+        }
+      },
+      "uniqueConstraints": {
+        "campus_students_workspace_id_roll_unique": {
+          "name": "campus_students_workspace_id_roll_unique",
+          "columns": [
+            "workspace_id",
+            "roll"
+          ]
+        }
+      },
+      "checkConstraints": {
+        "campus_students_opening_due_check": {
+          "name": "campus_students_opening_due_check",
+          "value": "opening_due >= 0"
+        }
+      }
+    },
+    "campus_subjects": {
+      "name": "campus_subjects",
+      "columns": {
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "code": {
+          "name": "code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "faculty": {
+          "name": "faculty",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "room": {
+          "name": "room",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "time": {
+          "name": "time",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "period": {
+          "name": "period",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "campus_subjects_workspace_id_campus_workspaces_id_fk": {
+          "tableFrom": "campus_subjects",
+          "tableTo": "campus_workspaces",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "name": "campus_subjects_workspace_id_campus_workspaces_id_fk"
+        }
+      },
+      "compositePrimaryKeys": {
+        "campus_subjects_workspace_id_id_pk": {
+          "columns": [
+            "workspace_id",
+            "id"
+          ],
+          "name": "campus_subjects_workspace_id_id_pk"
+        }
+      },
+      "uniqueConstraints": {
+        "campus_subjects_workspace_id_code_unique": {
+          "name": "campus_subjects_workspace_id_code_unique",
+          "columns": [
+            "workspace_id",
+            "code"
+          ]
+        }
+      },
+      "checkConstraints": {
+        "campus_subjects_period_check": {
+          "name": "campus_subjects_period_check",
+          "value": "period BETWEEN 1 AND 8"
+        }
+      }
+    },
+    "faculty_assignments": {
+      "name": "faculty_assignments",
+      "columns": {
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "subject_id": {
+          "name": "subject_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "faculty_assignments_workspace_id_subject_id_campus_subjects_workspace_id_id_fk": {
+          "tableFrom": "faculty_assignments",
+          "tableTo": "campus_subjects",
+          "columnsFrom": [
+            "workspace_id",
+            "subject_id"
+          ],
+          "columnsTo": [
+            "workspace_id",
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "name": "faculty_assignments_workspace_id_subject_id_campus_subjects_workspace_id_id_fk"
+        },
+        "faculty_assignments_workspace_id_user_id_staff_members_workspace_id_user_id_fk": {
+          "tableFrom": "faculty_assignments",
+          "tableTo": "staff_members",
+          "columnsFrom": [
+            "workspace_id",
+            "user_id"
+          ],
+          "columnsTo": [
+            "workspace_id",
+            "user_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "name": "faculty_assignments_workspace_id_user_id_staff_members_workspace_id_user_id_fk"
+        }
+      },
+      "compositePrimaryKeys": {
+        "faculty_assignments_workspace_id_user_id_subject_id_pk": {
+          "columns": [
+            "workspace_id",
+            "user_id",
+            "subject_id"
+          ],
+          "name": "faculty_assignments_workspace_id_user_id_subject_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "attendance_sessions": {
+      "name": "attendance_sessions",
+      "columns": {
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "subject_id": {
+          "name": "subject_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "class_date": {
+          "name": "class_date",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "period": {
+          "name": "period",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "attendance_sessions_workspace_id_subject_id_campus_subjects_workspace_id_id_fk": {
+          "tableFrom": "attendance_sessions",
+          "tableTo": "campus_subjects",
+          "columnsFrom": [
+            "workspace_id",
+            "subject_id"
+          ],
+          "columnsTo": [
+            "workspace_id",
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "name": "attendance_sessions_workspace_id_subject_id_campus_subjects_workspace_id_id_fk"
+        }
+      },
+      "compositePrimaryKeys": {
+        "attendance_sessions_workspace_id_id_pk": {
+          "columns": [
+            "workspace_id",
+            "id"
+          ],
+          "name": "attendance_sessions_workspace_id_id_pk"
+        }
+      },
+      "uniqueConstraints": {
+        "attendance_sessions_workspace_id_subject_id_class_date_period_unique": {
+          "name": "attendance_sessions_workspace_id_subject_id_class_date_period_unique",
+          "columns": [
+            "workspace_id",
+            "subject_id",
+            "class_date",
+            "period"
+          ]
+        }
+      },
+      "checkConstraints": {}
+    },
+    "attendance_entries": {
+      "name": "attendance_entries",
+      "columns": {
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "session_id": {
+          "name": "session_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "student_id": {
+          "name": "student_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "present": {
+          "name": "present",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "attendance_entries_workspace_id_student_id_campus_students_workspace_id_id_fk": {
+          "tableFrom": "attendance_entries",
+          "tableTo": "campus_students",
+          "columnsFrom": [
+            "workspace_id",
+            "student_id"
+          ],
+          "columnsTo": [
+            "workspace_id",
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "name": "attendance_entries_workspace_id_student_id_campus_students_workspace_id_id_fk"
+        },
+        "attendance_entries_workspace_id_session_id_attendance_sessions_workspace_id_id_fk": {
+          "tableFrom": "attendance_entries",
+          "tableTo": "attendance_sessions",
+          "columnsFrom": [
+            "workspace_id",
+            "session_id"
+          ],
+          "columnsTo": [
+            "workspace_id",
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "name": "attendance_entries_workspace_id_session_id_attendance_sessions_workspace_id_id_fk"
+        }
+      },
+      "compositePrimaryKeys": {
+        "attendance_entries_workspace_id_session_id_student_id_pk": {
+          "columns": [
+            "workspace_id",
+            "session_id",
+            "student_id"
+          ],
+          "name": "attendance_entries_workspace_id_session_id_student_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "attendance_entries_present_check": {
+          "name": "attendance_entries_present_check",
+          "value": "present IN (0,1)"
+        }
+      }
+    },
+    "mark_batches": {
+      "name": "mark_batches",
+      "columns": {
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "subject_id": {
+          "name": "subject_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "mark_batches_workspace_id_subject_id_campus_subjects_workspace_id_id_fk": {
+          "tableFrom": "mark_batches",
+          "tableTo": "campus_subjects",
+          "columnsFrom": [
+            "workspace_id",
+            "subject_id"
+          ],
+          "columnsTo": [
+            "workspace_id",
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "name": "mark_batches_workspace_id_subject_id_campus_subjects_workspace_id_id_fk"
+        }
+      },
+      "compositePrimaryKeys": {
+        "mark_batches_workspace_id_subject_id_pk": {
+          "columns": [
+            "workspace_id",
+            "subject_id"
+          ],
+          "name": "mark_batches_workspace_id_subject_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "mark_batches_status_check": {
+          "name": "mark_batches_status_check",
+          "value": "status IN ('Draft','Submitted','Locked')"
+        }
+      }
+    },
+    "fee_payments": {
+      "name": "fee_payments",
+      "columns": {
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "student_id": {
+          "name": "student_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "amount": {
+          "name": "amount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "recorded_at": {
+          "name": "recorded_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "receipt": {
+          "name": "receipt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fee_payments_workspace_id_student_id_campus_students_workspace_id_id_fk": {
+          "tableFrom": "fee_payments",
+          "tableTo": "campus_students",
+          "columnsFrom": [
+            "workspace_id",
+            "student_id"
+          ],
+          "columnsTo": [
+            "workspace_id",
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "name": "fee_payments_workspace_id_student_id_campus_students_workspace_id_id_fk"
+        }
+      },
+      "compositePrimaryKeys": {
+        "fee_payments_workspace_id_id_pk": {
+          "columns": [
+            "workspace_id",
+            "id"
+          ],
+          "name": "fee_payments_workspace_id_id_pk"
+        }
+      },
+      "uniqueConstraints": {
+        "fee_payments_workspace_id_receipt_unique": {
+          "name": "fee_payments_workspace_id_receipt_unique",
+          "columns": [
+            "workspace_id",
+            "receipt"
+          ]
+        }
+      },
+      "checkConstraints": {
+        "fee_payments_amount_check": {
+          "name": "fee_payments_amount_check",
+          "value": "amount > 0"
+        }
+      }
+    },
+    "mentor_tasks": {
+      "name": "mentor_tasks",
+      "columns": {
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "student_id": {
+          "name": "student_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "reason": {
+          "name": "reason",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "evidence": {
+          "name": "evidence",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "mentor": {
+          "name": "mentor",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "mentor_user_id": {
+          "name": "mentor_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "mentor_tasks_workspace_id_student_id_campus_students_workspace_id_id_fk": {
+          "tableFrom": "mentor_tasks",
+          "tableTo": "campus_students",
+          "columnsFrom": [
+            "workspace_id",
+            "student_id"
+          ],
+          "columnsTo": [
+            "workspace_id",
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "name": "mentor_tasks_workspace_id_student_id_campus_students_workspace_id_id_fk"
+        }
+      },
+      "compositePrimaryKeys": {
+        "mentor_tasks_workspace_id_id_pk": {
+          "columns": [
+            "workspace_id",
+            "id"
+          ],
+          "name": "mentor_tasks_workspace_id_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "audit_events": {
+      "name": "audit_events",
+      "columns": {
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "occurred_at": {
+          "name": "occurred_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "actor": {
+          "name": "actor",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "actor_user_id": {
+          "name": "actor_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "action": {
+          "name": "action",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "detail": {
+          "name": "detail",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "audit_events_workspace_id_campus_workspaces_id_fk": {
+          "tableFrom": "audit_events",
+          "tableTo": "campus_workspaces",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "name": "audit_events_workspace_id_campus_workspaces_id_fk"
+        }
+      },
+      "compositePrimaryKeys": {
+        "audit_events_workspace_id_id_pk": {
+          "columns": [
+            "workspace_id",
+            "id"
+          ],
+          "name": "audit_events_workspace_id_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "processed_operations": {
+      "name": "processed_operations",
+      "columns": {
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "actor_user_id": {
+          "name": "actor_user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "fingerprint": {
+          "name": "fingerprint",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "processed_operations_workspace_id_campus_workspaces_id_fk": {
+          "tableFrom": "processed_operations",
+          "tableTo": "campus_workspaces",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "name": "processed_operations_workspace_id_campus_workspaces_id_fk"
+        }
+      },
+      "compositePrimaryKeys": {
+        "processed_operations_workspace_id_id_pk": {
+          "columns": [
+            "workspace_id",
+            "id"
+          ],
+          "name": "processed_operations_workspace_id_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "erp_records": {
+      "name": "erp_records",
+      "columns": {
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "kind": {
+          "name": "kind",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "data_json": {
+          "name": "data_json",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "erp_record_kind": {
+          "name": "erp_record_kind",
+          "columns": [
+            "workspace_id",
+            "kind"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "erp_records_workspace_id_campus_workspaces_id_fk": {
+          "tableFrom": "erp_records",
+          "tableTo": "campus_workspaces",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "name": "erp_records_workspace_id_campus_workspaces_id_fk"
+        }
+      },
+      "compositePrimaryKeys": {
+        "erp_records_workspace_id_id_pk": {
+          "columns": [
+            "workspace_id",
+            "id"
+          ],
+          "name": "erp_records_workspace_id_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "portal_members": {
+      "name": "portal_members",
+      "columns": {
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "display_name": {
+          "name": "display_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "active": {
+          "name": "active",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 1
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 1
+        },
+        "student_ids": {
+          "name": "student_ids",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "portal_user_lookup": {
+          "name": "portal_user_lookup",
+          "columns": [
+            "user_id",
+            "active"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "portal_members_workspace_id_campus_workspaces_id_fk": {
+          "tableFrom": "portal_members",
+          "tableTo": "campus_workspaces",
+          "columnsFrom": [
+            "workspace_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "name": "portal_members_workspace_id_campus_workspaces_id_fk"
+        }
+      },
+      "compositePrimaryKeys": {
+        "portal_members_workspace_id_user_id_pk": {
+          "columns": [
+            "workspace_id",
+            "user_id"
+          ],
+          "name": "portal_members_workspace_id_user_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "portal_members_role_check": {
+          "name": "portal_members_role_check",
+          "value": "role IN ('student','parent')"
+        },
+        "portal_members_active_check": {
+          "name": "portal_members_active_check",
+          "value": "active IN (0,1)"
+        }
+      }
+    },
+    "local_documents": {
+      "name": "local_documents",
+      "columns": {
+        "object_key": {
+          "name": "object_key",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "content_type": {
+          "name": "content_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "content_base64": {
+          "name": "content_base64",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "mark_entries": {
+      "name": "mark_entries",
+      "columns": {
+        "workspace_id": {
+          "name": "workspace_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "subject_id": {
+          "name": "subject_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "student_id": {
+          "name": "student_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "test": {
+          "name": "test",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "assignment": {
+          "name": "assignment",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "practical": {
+          "name": "practical",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "mark_entries_workspace_id_student_id_campus_students_workspace_id_id_fk": {
+          "tableFrom": "mark_entries",
+          "tableTo": "campus_students",
+          "columnsFrom": [
+            "workspace_id",
+            "student_id"
+          ],
+          "columnsTo": [
+            "workspace_id",
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "name": "mark_entries_workspace_id_student_id_campus_students_workspace_id_id_fk"
+        },
+        "mark_entries_workspace_id_subject_id_mark_batches_workspace_id_subject_id_fk": {
+          "tableFrom": "mark_entries",
+          "tableTo": "mark_batches",
+          "columnsFrom": [
+            "workspace_id",
+            "subject_id"
+          ],
+          "columnsTo": [
+            "workspace_id",
+            "subject_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action",
+          "name": "mark_entries_workspace_id_subject_id_mark_batches_workspace_id_subject_id_fk"
+        }
+      },
+      "compositePrimaryKeys": {
+        "mark_entries_workspace_id_subject_id_student_id_pk": {
+          "columns": [
+            "workspace_id",
+            "subject_id",
+            "student_id"
+          ],
+          "name": "mark_entries_workspace_id_subject_id_student_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "mark_entries_test_check": {
+          "name": "mark_entries_test_check",
+          "value": "test BETWEEN -1 AND 40"
+        },
+        "mark_entries_assignment_check": {
+          "name": "mark_entries_assignment_check",
+          "value": "assignment BETWEEN -1 AND 40"
+        },
+        "mark_entries_practical_check": {
+          "name": "mark_entries_practical_check",
+          "value": "practical BETWEEN -1 AND 40"
+        }
+      }
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}
